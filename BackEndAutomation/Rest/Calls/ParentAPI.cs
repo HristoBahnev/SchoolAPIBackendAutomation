@@ -10,7 +10,7 @@ namespace BackEndAutomation.Rest
 
         public RestResponse ViewStudentGrade(string token, string studentId)
         {
-            var request = new RestRequest($"/parents/{studentId}/grades", Method.Get);
+            var request = new RestRequest($"/grades/student/{studentId}", Method.Get);
             return ExecuteRequest(request, token);
         }
     }

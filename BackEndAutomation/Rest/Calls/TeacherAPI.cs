@@ -22,14 +22,14 @@ namespace BackEndAutomation.Rest
 
         public RestResponse AddStudentToClass(string token, string className, string studentName)
         {
-            var request = new RestRequest("/teacher/add-student", Method.Post);
+            var request = new RestRequest("/classes/add_student", Method.Post);
             request.AddJsonBody(new { className, studentName });
             return ExecuteRequest(request, token);
         }
 
         public RestResponse AssignGrade(string token, string studentId, int grade, string subject)
         {
-            var request = new RestRequest("/teacher/assign-grade", Method.Post);
+            var request = new RestRequest("/grades/add", Method.Put);
             request.AddJsonBody(new { student_id = studentId, grade, subject });
             return ExecuteRequest(request, token);
         }

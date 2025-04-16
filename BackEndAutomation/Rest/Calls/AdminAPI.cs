@@ -8,29 +8,22 @@ namespace BackEndAutomation.Rest
         {
         }
 
-        public RestResponse CreateUser(string token, string username, string password, string fullName, string role)
+        public RestResponse CreateUser(string token, string username, string password, string role)
         {
-            var request = new RestRequest("/admin/create_user", Method.Post);
+            var request = new RestRequest("/users/create", Method.Post);
             request.AddHeader("Authorization", $"Bearer {token}");
-            request.AddJsonBody(new
-            {
-                username,
-                password,
-                full_name = fullName,
-                role
-            });
+            request.AddQueryParameter("username", username);
+            request.AddQueryParameter("password", password);
+            request.AddQueryParameter("role", role);
             return ExecuteRequest(request);
         }
 
         public RestResponse ConnectParentToStudent(string token, string parentUsername, string studentId)
         {
-            var request = new RestRequest("/admin/connect_parent_to_student", Method.Post);
+            var request = new RestRequest("/users/connect_parent", Method.Put);
             request.AddHeader("Authorization", $"Bearer {token}");
-            request.AddJsonBody(new
-            {
-                parent_username = parentUsername,
-                student_id = studentId
-            });
+            request.AddQueryParameter("parent_username", parentUsername);
+            request.AddQueryParameter("student_id", studentId);
             return ExecuteRequest(request);
         }
     }
