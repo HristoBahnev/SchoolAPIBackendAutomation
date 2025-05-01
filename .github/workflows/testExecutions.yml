@@ -1,0 +1,50 @@
+name: BE-Automation_Login_Test_Execution
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Автоматично стартиране всеки ден в 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Restore dependencies
+        run: |
+          cd .\BackEndAutomation\
+          dotnet restore
+
+      - name: Build project
+        run: |
+          cd .\BackEndAutomation\
+          dotnet build --no-restore --configuration Release
+
+      - name: Run Reqnroll tests
+        run:  |
+          cd .\BackEndAutomation\
+          dotnet test --no-build --configuration Release --filter Category=login || true
+      
+      - name: Find Report File
+        id: find_report
+        run: |
+          $report = Get-ChildItem -Path ./BackEndAutomation/BackEndAutomation/bin/Release/net8.0/ -Filter "TestReport_*.html" | Select-Object -First 1
+          echo "REPORT_NAME=$($report.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
+        shell: pwsh
+
+      # ✅ Качване на репорта в GitHub Artifacts (запазва се 7 дни)
+      - name: Upload Test Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: ./BackEndAutomation/BackEndAutomation/bin/Release/net8.0/TestReport_*.html
+          retention-days: 7  # Запазва репорта за 7 дни

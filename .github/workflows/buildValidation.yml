@@ -1,0 +1,32 @@
+name: BE-Automation_Build_Validation_CI_process
+
+on:
+  push:
+    branches:
+      - ci_process
+  pull_request:
+    branches:
+      - ci_process
+
+jobs:
+  build_and_test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Restore dependencies
+        run: |
+          cd .\BackEndAutomation\
+          dotnet restore
+
+      - name: Build project
+        run: |
+          cd .\BackEndAutomation\
+          dotnet build --no-restore --configuration Release
