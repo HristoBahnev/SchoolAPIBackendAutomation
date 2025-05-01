@@ -1,6 +1,7 @@
 ﻿using BackEndAutomation.Utilities;
 using Reqnroll;
 using System.Collections;
+using static BackEndAutomation.Utilities.UtilitiesMethods;
 
 namespace BackEndAutomation
 {
@@ -13,15 +14,25 @@ namespace BackEndAutomation
         public Hooks(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
+        }
+
+        [BeforeTestRun]
+        public static void SetLogFileName()
+        {
+            var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            NLog.LogManager.Configuration.Variables["logFileNameTimestamp"] = timestamp;
+            NLog.LogManager.ReconfigExistingLoggers();
+
             ExtentManager.InitReport();
         }
 
         [BeforeScenario]
         public void BeforeScenario()
         {
-            var еxtentTest = ExtentManager.CreateTest("Scenario: " + GetScenarioName(_scenarioContext));
+            string scenarioName = GetScenarioName(_scenarioContext);
+            var еxtentTest = ExtentManager.CreateTest("Scenario: " + scenarioName);
             _scenarioContext["ExtentTest"] = еxtentTest;
-            UtilitiesMethods.LogMessage("Starting scenario", _scenarioContext);
+            UtilitiesMethods.LogMessage($"Starting scenario: {scenarioName}", _scenarioContext);
             Logger.Log.Info("Starting scenario...");
         }
 

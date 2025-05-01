@@ -19,18 +19,12 @@ namespace BackEndAutomation.Rest
             }
             return ExecuteRequest(request, token);
         }
-
-        public RestResponse AddStudentToClass(string token, string className, string studentName)
-        {
-            var request = new RestRequest("/classes/add_student", Method.Post);
-            request.AddJsonBody(new { className, studentName });
-            return ExecuteRequest(request, token);
-        }
-
-        public RestResponse AssignGrade(string token, string studentId, int grade, string subject)
+        public RestResponse AddGrade(string token, string studentId, string subject, int grade)
         {
             var request = new RestRequest("/grades/add", Method.Put);
-            request.AddJsonBody(new { student_id = studentId, grade, subject });
+            request.AddQueryParameter("student_id", studentId);
+            request.AddQueryParameter("subject", subject);
+            request.AddQueryParameter("grade", grade);
             return ExecuteRequest(request, token);
         }
     }

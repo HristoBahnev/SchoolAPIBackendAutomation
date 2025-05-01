@@ -9,6 +9,7 @@ namespace BackEndAutomation.Rest
         public RestResponse Login(string username, string password, string grantType = "password")
         {
             var request = new RestRequest("/auth/login", Method.Post);
+            request.AlwaysMultipartFormData = true;
             request.AddParameter("username", username);
             request.AddParameter("password", password);
             request.AddParameter("grant_type", grantType);
