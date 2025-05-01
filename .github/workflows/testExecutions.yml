@@ -46,6 +46,7 @@ jobs:
       # Locate the test report file.
       # This step searches in the expected folder and exports the report's name to the environment.
       - name: Find Report File
+        if: always()
         id: find_report
         run: |
           $report = Get-ChildItem -Path ./BackEndAutomation/BackEndAutomation/bin/Release/net8.0/ -Filter "TestReport_*.html" | Select-Object -First 1
@@ -54,6 +55,7 @@ jobs:
 
       # Upload the generated test report as an artifact.
       - name: Upload Test Report as Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-report
