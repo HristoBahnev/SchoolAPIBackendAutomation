@@ -27,7 +27,7 @@ SchoolAPIBackendAutomation is an automated testing suite for the School API back
 
 ### Installation
 
-1.  bashCopyEditgit clone https://github.com/HristoBahnev/SchoolAPIBackendAutomation.git
+1.  Clone the repository https://github.com/HristoBahnev/SchoolAPIBackendAutomation.git
     
 2.  Open the solution in your preferred IDE.
     
