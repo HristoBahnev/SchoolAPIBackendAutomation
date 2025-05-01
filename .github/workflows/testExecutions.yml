@@ -1,8 +1,10 @@
-name: BE-Automation_Tests_Execution
+name: CI - Build, Test, and Report (Windows)
 
 on:
-  schedule:
-    - cron: "0 0 * * *"
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -10,29 +12,39 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      # Check out your repository so the workflow can access your code.
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup .NET
+      # Set up the .NET 8.0 SDK.
+      - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0'
+          dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
-        run: |
-          cd .\BackEndAutomation\
-          dotnet restore
+      # Cache NuGet packages to speed up the build process.
+      - name: Cache NuGet Packages
+        uses: actions/cache@v3
+        with:
+          # On Windows, the NuGet packages are stored under the USERPROFILE directory.
+          path: ${{ env.USERPROFILE }}\.nuget\packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-
 
-      - name: Build project
-        run: |
-          cd .\BackEndAutomation\
-          dotnet build --no-restore --configuration Release
+      # Restore project dependencies.
+      - name: Restore Dependencies
+        run: dotnet restore
 
-      - name: Run all tests
-        run:  |
-          cd .\BackEndAutomation\
-          dotnet test --no-build --configuration Release || true
-      
+      # Build the project using the Release configuration.
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore
+
+      # Run tests with normal verbosity.
+      - name: Run Tests
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
+      # Locate the test report file.
+      # This step searches in the expected folder and exports the report's name to the environment.
       - name: Find Report File
         id: find_report
         run: |
@@ -40,9 +52,10 @@ jobs:
           echo "REPORT_NAME=$($report.Name)" | Out-File -FilePath $env:GITHUB_ENV -Append
         shell: pwsh
 
+      # Upload the generated test report as an artifact.
       - name: Upload Test Report as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: ./BackEndAutomation/BackEndAutomation/bin/Release/net8.0/TestReport_*.html
-          retention-days: 7 
+          retention-days: 7
