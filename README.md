@@ -6,16 +6,12 @@ SchoolAPIBackendAutomation is an automated testing suite for the School API back
 🚀 Features
 -----------
 
-*   BDD-style tests with Reqnroll
-    
-*   Role-based API testing: Admin, Teacher, Parent, Student
-    
-*   Modular API clients (e.g., AdminApi, TeacherApi, ParentApi)
-    
-*   ScenarioContext for shared test state
-    
-*   Utility methods for assertions and logging​
-    
+- ✅ BDD test structure using [Reqnroll](https://reqnroll.dev/)
+- ✅ Modular API services (`AdminApi`, `TeacherApi`, `ParentApi`, etc.)
+- ✅ Shared test context via `ScenarioContext`
+- ✅ Centralized utilities for assertions and logging
+- ✅ ExtentReports for detailed HTML reporting
+- ✅ NLog-based logging per test run
 
 🧪 Getting Started
 ------------------
