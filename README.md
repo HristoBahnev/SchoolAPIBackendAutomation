@@ -1,12 +1,12 @@
 SchoolAPIBackendAutomation
 ==========================
 
-SchoolAPIBackendAutomation is an automated testing suite for the School API backend, utilizing C#, RestSharp, and Reqnroll (SpecFlow) to validate RESTful endpoints for roles such as Admin, Teacher, Student, and Parent.​
+SchoolAPIBackendAutomation is an automated testing suite for the School API backend, utilizing C#, RestSharp, and Reqnroll to validate RESTful endpoints for roles such as Admin, Teacher, Student, and Parent.​
 
 🚀 Features
 -----------
 
-*   BDD-style tests with Reqnroll (SpecFlow)
+*   BDD-style tests with Reqnroll
     
 *   Role-based API testing: Admin, Teacher, Parent, Student
     
