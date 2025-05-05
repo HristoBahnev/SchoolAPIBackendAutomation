@@ -41,3 +41,5 @@ SchoolAPIBackendAutomation is an automated testing suite for the School API back
     *   Build the solution.
         
     *   Open Test Explorer and run all tests.
+
+Test
